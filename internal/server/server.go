@@ -3,9 +3,11 @@ package server
 
 import (
 	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/middleware"
 	_ "github.com/go-chi/chi/middleware"
 	"log"
 	"net/http"
+	v1 "tangelo-flattener/internal/server/v1"
 	"time"
 )
 
@@ -30,6 +32,10 @@ func (serv *Server) Start() {
 func New(port string) (*Server, error) {
 	r := chi.NewRouter()
 
+	r.Use(middleware.Logger)
+	r.Use(middleware.Recoverer)
+
+	r.Mount("/api/v1", v1.New())
 
 	serv := &http.Server{
 		Addr:         ":" + port,
