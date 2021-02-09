@@ -4,8 +4,14 @@ import (
 	"encoding/json"
 	"github.com/go-chi/chi"
 	"net/http"
+	"tangelo-flattener/pkg/flatteners"
 	"tangelo-flattener/pkg/response"
 )
+
+type OutputResponse struct {
+	Flatten []interface{} `json:"flatten"`
+	Depth   int           `json:"depth"`
+}
 
 func New() http.Handler {
 	r := chi.NewRouter()
@@ -25,5 +31,9 @@ func flatArrayHandler(w http.ResponseWriter, r *http.Request) {
 
 	defer r.Body.Close()
 
-	_ = response.JSON(w, r, http.StatusCreated, inputArray)
+	var arrayToFlatten flatteners.FirstAlgorithm = inputArray.([]interface{})
+
+	outputArray, depth := arrayToFlatten.FlattenArray()
+
+	_ = response.JSON(w, r, http.StatusCreated, OutputResponse{Flatten: outputArray, Depth: depth})
 }
