@@ -43,7 +43,7 @@ func flatArrayHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_ = response.JSON(w, r, http.StatusCreated, OutputResponse{Flatten: outputArray, Depth: depth})
+	_ = response.JSON(w, r, http.StatusOK, OutputResponse{Flatten: outputArray, Depth: depth})
 }
 
 func getListSuccessfulProcessedArray(w http.ResponseWriter, r *http.Request) {
@@ -53,5 +53,5 @@ func getListSuccessfulProcessedArray(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_ = response.JSON(w, r, http.StatusCreated, array)
+	_ = response.JSON(w, r, http.StatusOK, array)
 }
